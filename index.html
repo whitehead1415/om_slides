@@ -115,6 +115,90 @@ if( window.location.search.match( /print-pdf/gi ) ) {
         </ul>
       </section>
 
+      <section>
+        <h3>Communication between components is difficult</h3>
+        <ul>
+          <li>Encapsulation disrupts data bindings</li>
+        </ul>
+        <pre><code>
+        $scope.emit('event', val)
+        $scope.broadcast('event', val)
+        $scope.on('event', function(val){
+          doSomethingWithVal
+        });
+        </code></pre>
+      </section>
+
+      <section>
+        <h2>Problems</h2>
+        <ul>
+          <li>Expertise required</li>
+          <li>Performance</li>
+          <li>Communication between components is difficult</li>
+          <li>Hard to maintain large applications</li>
+          <li>Long turn around time for business "pivots"</li>
+        </ul>
+      </section>
+
+    </section>
+
+    <section>
+      <h2>What do you do with state?</h2>
+      <ul>
+        <li>Sharing state is hard</li>
+        <li>Components should be able to affect other components without knowing about how each component operates</li>
+        <li>Changing global state should rerender smallest subset possible</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>FRP</h2>
+      <ul>
+        <li>Comes from haskell 1998</li>
+        <li>Still evolving through research</li>
+        <li>Declarative = Composable</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Animation Example</h2>
+      Imperative != composable
+      Declarative = composable
+    </section>
+
+    <section>
+      <h2>Om</h2>
+    </section>
+
+    <section>
+      <h2>React</h2>
+      <ul>
+        <li>Library (No more DOM manipulation)</li>
+        <li>Focus on components</li>
+        <li>Declarative</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Om Improvements</h2>
+      <ul>
+        <li>Immutable data structures</li>
+        <li>No need for a templating language</li>
+        <li>Cursors</li>
+      </ul>
+    </section>
+
+    <section>
+      Demo
+    </section>
+
+    <section>
+      <ul>
+        <li>Interface builder</li>
+        <li>Faster pivots</li>
+        <li>Composable components</li>
+        <li>Ability to scale to large apps</li>
+      </ul>
     </section>
 
   </div>
