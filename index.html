@@ -136,7 +136,7 @@ if( window.location.search.match( /print-pdf/gi ) ) {
           <li>Performance</li>
           <li>Communication between components is difficult</li>
           <li>Hard to maintain large applications</li>
-          <li>Long turn around time for business "pivots"</li>
+          <li>Long turn around time for business pivots</li>
         </ul>
       </section>
 
@@ -146,24 +146,35 @@ if( window.location.search.match( /print-pdf/gi ) ) {
       <h2>What do you do with state?</h2>
       <ul>
         <li>Sharing state is hard</li>
-        <li>Components should be able to affect other components without knowing about how each component operates</li>
-        <li>Changing global state should rerender smallest subset possible</li>
+        <li>Components are adaptable when isolated</li>
+        <li>Leverage state</li>
       </ul>
     </section>
 
     <section>
-      <h2>FRP</h2>
+      <h2>Functional Reactive Programming</h2>
       <ul>
-        <li>Comes from haskell 1998</li>
+        <li>Comes from haskell community 1997</li>
         <li>Still evolving through research</li>
         <li>Declarative = Composable</li>
       </ul>
+      <img style="margin-top:2em;" src="images/FunctionsSum4.gif"/>
     </section>
 
     <section>
-      <h2>Animation Example</h2>
-      Imperative != composable
-      Declarative = composable
+      <section>
+        <h2>What a behavior looks like</h2>
+        <pre><code>
+          newtype Behavior a =
+            Behavior {
+              at :: Time -> a
+            }
+
+          myName :: Behavior Text
+
+          myName `at` yesterday
+        </code></pre>
+      </section>
     </section>
 
     <section>
@@ -185,20 +196,63 @@ if( window.location.search.match( /print-pdf/gi ) ) {
         <li>Immutable data structures</li>
         <li>No need for a templating language</li>
         <li>Cursors</li>
+        <li>Communicating Sequential Processes</li>
       </ul>
     </section>
 
     <section>
-      Demo
+      <pre><code>
+(def app-state (atom {:active 0
+                      :tabs
+                      [{:title "First" :class "dark-blue"
+                        :view "First View"}
+                       {:title "Second" :class "red"
+                        :view "Second View"}
+                       {:title "Third" :class "light-blue"
+                        :view "Third View"}]}))
+
+(defn tab-bar-view [view owner]
+  (dom/div #js {:className "tab-view"} view))
+
+(defn tab [tab app index]
+  (let [className (str (:class tab)
+                       " tab "
+                       (if (= index (:active app)) "active" "" ))]
+    (dom/div #js {:onClick (fn [e] (om/update! app :active index))
+                  :className className} (:title tab))))
+
+(defn tab-bar-component [app owner]
+  (reify
+    om/IRender
+    (render [this]
+      (dom/div nil
+        (apply dom/div #js {:className "tab-bar"}
+          (map tab (:tabs app) (iterate identity app) (range)))
+        (om/build tab-bar-view (:view (nth (:tabs app) (:active app))))))))
+
+
+(om/root
+  tab-bar-component
+  app-state
+  {:target (. js/document (getElementById "app"))})
+      </code></pre>
     </section>
 
     <section>
-      <ul>
-        <li>Interface builder</li>
-        <li>Faster pivots</li>
-        <li>Composable components</li>
-        <li>Ability to scale to large apps</li>
-      </ul>
+      <section>
+        <h2>Implications</h2>
+        <ul>
+          <li>Interface builder</li>
+          <li>Composable components</li>
+          <li>Ability to scale to large apps</li>
+          <li>Faster pivots</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Interface Builder</h2>
+        <img src="images/interface_builder.jpg"/>
+      </section>
     </section>
 
   </div>
